@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="/styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.1/dist/gridstack.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" />
+  <title>Stitch Design</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M128,24C74.17,24,32,48.6,32,80v96c0,31.4,42.17,56,96,56s96-24.6,96-56V80C224,48.6,181.83,24,128,24Zm80,104c0,9.62-7.88,19.43-21.61,26.92C170.93,163.35,150.19,168,128,168s-42.93-4.65-58.39-13.08C55.88,147.43,48,137.62,48,128V111.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64Zm-21.61,74.92C170.93,211.35,150.19,216,128,216s-42.93-4.65-58.39-13.08C55.88,195.43,48,185.62,48,176V159.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64V176C208,185.62,200.12,195.43,186.39,202.92Z" />
+        </svg>
+      </div>
+      <div class="app-logo">
+        justQL
+      </div>
+    </div>
+    <div class="header-right">
+    </button>
+    <!-- NEW: Change Layout Button - Moved to the left of the user icon -->
+    <button class="header-button" id="change-layout-btn" title="Change Layout">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM48,80h160V176H48ZM208,80h-72v96h72Zm-144,0v96H48V80Z"/>
+      </svg>
+  </button>
+      <button class="header-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
+        </svg>
+      </button>
+    </div>
+  </header>
+  <!-- The layout-selector-popup should remain positioned after the header -->
+<!-- NEW: Layout Selector Popup HTML - This MUST be a direct child of <body> -->
+  <div id="layout-selector-popup" class="hidden absolute">
+    <!-- Layout 1 Button (Stacked Rows) -->
+    <button class="layout-option-btn" data-layout="layout1" title="Stacked Layout">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" width="24" height="24">
+            <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM48,80H208V112H48ZM48,128H208v32H48ZM48,184H208v16H48Z"/>
+        </svg>
+    </button>
+    <!-- Layout 2 Button (Three Even Columns) -->
+    <button class="layout-option-btn" data-layout="layout2" title="Three Columns">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" width="24" height="24">
+            <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM48,80h48V176H48ZM104,80h48V176h-48ZM160,80h48V176h-48Z"/>
+        </svg>
+    </button>
+    <!-- Layout 3 Button (Left 1/3 & Stacked Right 2/3) -->
+    <button class="layout-option-btn" data-layout="layout3" title="Left 1/3, Stacked Right 2/3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" width="24" height="24">
+            <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM48,80h48V176H48ZM112,80h96V120h-96ZM112,136h96v40h-96Z"/>
+        </svg>
+    </button>
+</div>
+  
+  <!-- Chart Designer Popup -->
+  <div id="chart-designer-popup" class="popup-overlay hidden">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h3>🔧 Chart Designer</h3>
+      </div>
+      <div class="popup-body">
+        <div class="form-group">
+          <label>Chart Title</label>
+          <input type="text" id="chart-title-input" class="form-input" placeholder="Enter chart title">
+        </div>
+        <div class="form-group">
+          <label>Legend Position</label>
+          <select id="legend-position-select" class="form-select">
+            <option value="top">Top</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="bottom">Bottom</option>
+          </select>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button class="popup-button" id="chart-designer-apply">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connection Manager Popup -->
+  <div id="connection-popup" class="popup-overlay hidden">
+    <div class="popup-content connection-popup">
+      <div class="popup-header">
+        <h3>New Connection</h3>
+        <button class="close-button" id="connection-popup-close">×</button>
+      </div>
+      <div class="popup-body">
+        <div class="form-group">
+          <label>Connection Name</label>
+          <input type="text" id="connection-name" class="form-input" placeholder="My Connection">
+        </div>
+
+        <div class="form-group">
+          <label>Connection Type</label>
+          <select id="connection-type" class="form-select">
+            <option value="mysql">MySQL</option>
+            <option value="postgresql">PostgreSQL</option>
+            <option value="sqlserver">SQL Server</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Connection Mode</label>
+          <select id="connection-mode" class="form-select">
+            <option value="host-port">Host and Port</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Host</label>
+            <input type="text" id="connection-host" class="form-input" placeholder="localhost" value="localhost">
+          </div>
+          <div class="form-group">
+            <label>Port</label>
+            <input type="text" id="connection-port" class="form-input" placeholder="3306" value="3306">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="flex items-center">
+            <input type="checkbox" id="connection-ssl" class="mr-2">
+            <span>Enable SSL</span>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>User</label>
+            <input type="text" id="connection-username" class="form-input" placeholder="username">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="connection-password" class="form-input" placeholder="password">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Default Database</label>
+          <input type="text" id="connection-database" class="form-input" placeholder="database_name">
+        </div>
+
+        <div class="form-group">
+          <label class="flex items-center">
+            <input type="checkbox" id="save-passwords" class="mr-2" checked>
+            <span>Save Passwords</span>
+          </label>
+        </div>
+
+
+        <!-- Test Results Area -->
+        <div id="connection-test-result" class="connection-result hidden">
+          <div class="result-content">
+            <span class="result-icon"></span>
+            <span class="result-message"></span>
+          </div>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button class="popup-button secondary" id="test-connection">Test</button>
+        <button class="popup-button primary" id="save-connection">Connect</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="sidebar-container collapsed">
+    <!-- Icon Bar -->
+    <div class="icon-bar">
+      <div class="icon-item" data-panel="connections" title="Connections">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M128,24C74.17,24,32,48.6,32,80v96c0,31.4,42.17,56,96,56s96-24.6,96-56V80C224,48.6,181.83,24,128,24Zm80,104c0,9.62-7.88,19.43-21.61,26.92C170.93,163.35,150.19,168,128,168s-42.93-4.65-58.39-13.08C55.88,147.43,48,137.62,48,128V111.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64Zm-21.61,74.92C170.93,211.35,150.19,216,128,216s-42.93-4.65-58.39-13.08C55.88,195.43,48,185.62,48,176V159.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64V176C208,185.62,200.12,195.43,186.39,202.92Z" />
+        </svg>
+      </div>
+      <div class="icon-item" data-panel="queries" title="Saved Queries">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z" />
+        </svg>
+      </div>
+      <div class="icon-item" data-panel="schema" title="Table Schema">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM40,112H80v32H40Zm56,0H216v32H96ZM216,64V96H40V64ZM40,160H80v32H40Zm176,32H96V160H216v32Z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Content Panel -->
+    <div class="content-panel" id="contentPanel">
+      <div class="panel-content" id="panelContent">
+        <!-- Connections Panel -->
+        <div class="panel-section" id="connections-panel">
+          <div class="panel-header">CONNECTIONS</div>
+          <div class="section-header" data-section="active-connections">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Active Connections</span>
+            <div class="add-button">+</div>
+          </div>
+          <div class="section-items">
+            <!-- Connections will be loaded dynamically by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Queries Panel (hidden by default) -->
+        <div class="panel-section" id="queries-panel" style="display: none;">
+          <div class="panel-header">SAVED QUERIES</div>
+          <div class="section-header" data-section="favourites">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Favourites</span>
+          </div>
+          <div class="section-items" id="favourites-list">
+          </div>
+          <div class="schema-resizer" id="favourites-resizer">
+            <div class="resizer-line"></div>
+          </div>
+          <div class="section-header" data-section="saved-queries">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Saved Queries</span>
+          </div>
+          <div class="section-items" id="saved-queries-list">
+          </div>
+          <div class="schema-resizer" id="queries-resizer">
+            <div class="resizer-line"></div>
+          </div>
+          <div class="section-header" data-section="dashboards">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Dashboards</span>
+          </div>
+          <div class="section-items">
+            <div class="section-item">Daily Dashboard</div>
+            <div class="section-item">Monthly Report</div>
+          </div>
+        </div>
+
+        <!-- Schema Panel (hidden by default) -->
+        <div class="panel-section" id="schema-panel" style="display: none;">
+          <div class="panel-header">TABLE SCHEMA</div>
+          <div class="section-header" data-section="tables">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Tables</span>
+          </div>
+          <div class="section-items">
+            <div class="table-item">
+              <div class="table-header">
+                <span class="table-chevron">></span>
+                <span class="table-name">users</span>
+                <span class="table-menu" data-table="users">⋮</span>
+              </div>
+              <div class="table-columns collapsed">
+                <div class="column-item">
+                  <span class="column-name">id</span>
+                  <span class="column-type">INTEGER</span>
+                </div>
+                <div class="column-item">
+                  <span class="column-name">name</span>
+                  <span class="column-type">VARCHAR(255)</span>
+                </div>
+              </div>
+            </div>
+            <div class="table-item">
+              <div class="table-header">
+                <span class="table-chevron">></span>
+                <span class="table-name">orders</span>
+                <span class="table-menu" data-table="orders">⋮</span>
+              </div>
+              <div class="table-columns collapsed">
+                <div class="column-item">
+                  <span class="column-name">id</span>
+                  <span class="column-type">INTEGER</span>
+                </div>
+              </div>
+            </div>
+            <div class="table-item">
+              <div class="table-header">
+                <span class="table-chevron">></span>
+                <span class="table-name">products</span>
+                <span class="table-menu" data-table="products">⋮</span>
+              </div>
+              <div class="table-columns collapsed">
+                <div class="column-item">
+                  <span class="column-name">id</span>
+                  <span class="column-type">INTEGER</span>
+                </div>
+              </div>
+            </div>
+            <div class="table-item">
+              <div class="table-header">
+                <span class="table-chevron">></span>
+                <span class="table-name">categories</span>
+                <span class="table-menu" data-table="categories">⋮</span>
+              </div>
+              <div class="table-columns collapsed">
+                <div class="column-item">
+                  <span class="column-name">id</span>
+                  <span class="column-type">INTEGER</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="schema-resizer" id="schema-resizer">
+            <div class="resizer-line"></div>
+          </div>
+          <div class="section-header" data-section="views">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="m213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+            </svg>
+            <span>Views</span>
+          </div>
+          <div class="section-items">
+            <div class="section-item">user_analytics_view</div>
+            <div class="section-item">sales_summary_view</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="grid-stack">
+<!-- For the SQL Editor Item -->
+<div class="grid-stack-item" gs-w="12" gs-h="1" id="sql-editor-item">
+  <div class="grid-stack-item-content p-4 shadow-md text-input" gs-w="8" gs-h="3">
+    <h3 class="flex items-center justify-between grid-drag-handle"> <!-- ADD THIS CLASS -->
+      <span>📝 Query Editor <span id="query-info"></span></span>
+      <div class="flex space-x-2">
+        <button class="header-query" id="new-query-button">➕</button>
+        <button class="header-query" id="save-button">💾</button>
+        <button class="header-query" id="stop-button">🛑</button>
+        <button class="header-query" id="run-button">▶</button>
+      </div>
+    </h3>
+    <div class="textarea-wrapper">
+      <div class="line-numbers" id="line-numbers"></div>
+      <textarea id="sql-textarea"
+        placeholder="SELECT * FROM users WHERE...&#10;-- Write your SQL query here&#10;-- Use multiple lines for complex queries"></textarea>
+    </div>
+    <div class="flex items-center justify-between" id="error-details">
+      <div class="error-message"></div>
+    </div>
+  </div>
+</div>
+
+<!-- For the Data Table Section -->
+<div class="grid-stack-item" gs-w="12" gs-h="1" id="data-table-section">
+  <div class="grid-stack-item-content p-4 shadow-md data-table" gs-w="3" gs-h="5" 　id="data-table">
+    <h3 class="flex items-center justify-between grid-drag-handle">
+      📑 Data Table
+      <div class="flex space-x-2">
+        <button class="header-query" id="download-csv-button">📥</button>
+      </div>
+    </h3>
+    <div class="table-wrapper data-table" id="table-wrapper">
+      <div
+        style="padding: 20px; text-align: center; border: 2px dashed #555; border-radius: 8px; margin-top: 10px;"
+        id="table-placeholder">
+        <p>Data table will appear here</p>
+        <p style="font-size: 12px; margin-top: 10px; color: #888;">Data table will be generated based on your
+          query results</p>
+      </div>
+      <table border="1" width="100%" id="results-table" style="display: none;"></table>
+    </div>
+  </div>
+</div>
+
+<!-- For the Data Visualization Section (Chart) -->
+<div class="grid-stack-item" gs-w="12" gs-h="1" id="data-analysis-section">
+  <div class="grid-stack-item-content p-4 shadow-md chart-div" gs-w="3" gs-h="5">
+    <h3 class="flex items-center justify-between grid-drag-handle"> <!-- ADD THIS CLASS -->
+      📊 Data Visualization
+      <div class="flex space-x-2">
+      <button class="header-query" id="download-chart-button">📸</button>
+      <select id="chart-type-dropdown" class="ml-auto px-2 py-1 rounded bg-gray-700 text-white text-sm">
+          <option value="line">Line Chart</option>
+          <option value="column">Stacked Column</option>
+          <option value="grouped">Grouped Column</option>
+          <option value="timeseries">Time Series</option>
+          <option value="scatter">Scatter Plot</option>
+      </select>
+      <button class="header-query" id="refresh-chart-button">🔄</button>
+      <button class="header-query" id="customise-button">🔧</button>
+    </div>
+    </h3>
+    <div id="chart-container">
+      <div
+       
+        id="chart-placeholder">
+        <p>Chart visualization will appear here</p>
+        <p 
+          results</p>
+        <p>Default charts require exactly 3 columns:
+          X-axis, Grouping, Y-axis</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+  <!-- Table context menu -->
+  <div class="table-context-menu" id="tableContextMenu">
+    <button class="menu-item" id="copyNameItem">Copy name</button>
+    <button class="menu-item" id="loadTableItem">Load Table</button>
+    <button class="menu-item" id="sqlCreateItem">SQL Create</button>
+    <button class="menu-item" id="exportCsvItem">Export to CSV</button>
+  </div>
+
+  <script src="/script.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.1/dist/gridstack-all.min.js"></script>
+
+
+
+</body>
+
+</html>
