@@ -1,1250 +1,1249 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #0f0f0f;
-    color: #ffffff;
-    padding: 0px;
-    min-height: 100vh;
-  }
-  
-  /* Header Styles */
-  .app-header {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    border-bottom: 1px solid #333;
-    padding: 12px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-  }
-  
-  /* --- NEW: Layout Selector Popup Styles (Append to end of file) --- */
-  #layout-selector-popup {
-    position: absolute; /* Allows JS to position it precisely */
-    z-index: 1001;      /* Force it above the header (which is z-index: 100) */
-    background-color: #1a1a1a; /* Match your dark theme */
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    padding: 10px;
-    display: flex;       /* Layout buttons in a column */
-    flex-direction: column;
-    gap: 8px;            /* Space between buttons */
-  
-    /* top and left will be set by JS */
-  }
-  
-  /* Styles for individual layout option buttons inside the popup */
-  .layout-option-btn {
-    background-color: #2d2d30; /* Darker button background */
-    color: #cccccc;            /* Light color for icons */
-    border: 1px solid #444;
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;             /* To center the SVG icon */
-    justify-content: left;
-    align-items: left;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-  
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .layout-option-btn:hover {
-    background-color: #3e3e3e; /* Lighter background on hover */
-    border-color: #6366f1; /* Highlight with blue on hover */
-  }
-  
-  .layout-option-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor; /* SVG inherits color from parent button */
-  }
-  
-  .layout-option-btn.active {
-    background-color: #6366f1 !important;
-    border-color: #6366f1 !important;
-    color: #ffffff !important;
-  }
-  
-  /* Class to hide elements (used by JS) */
-  .hidden {
-    display: none !important; /* IMPORTANT: Ensures it's completely hidden */
-  }
-  
-  
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .header-icon {
-    width: 44px;
-    height: 44px;
-    margin: 0 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    background: rgba(99, 102, 241, 0.2);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-  }
-  
-  .header-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .app-logo {
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
-  }
-  
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-right: 24px;
-  }
-  
-  .header-query {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .header-button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .header-button:hover {
-    background-color: #3e3e3e; /* Lighter background on hover */
-    border-color: #6366f1; /* Highlight with blue on hover */
-  }
-  
-  .header-button svg {
-    width: 14px;
-    height: 14px;
-  }
-  
-  .sidebar-container {
-    position: fixed;
-    top: 64px;
-    /* Header height */
-    bottom: 0;
-    left: 0;
-    display: flex;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  
-  /* Icon Bar */
-  .icon-bar {
-    width: 60px;
-    background: #1a1a1a;
-    border-right: 1px solid #333;
-    display: flex;
-    flex-direction: column;
-    padding: 12px 0;
-    gap: 8px;
-  }
-  
-  .icon-item {
-    width: 44px;
-    height: 44px;
-    margin: 0 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #888;
-  }
-  
-  .icon-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
-  
-  .icon-item.active {
-    background: rgba(99, 102, 241, 0.2);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-  }
-  
-  .icon-item svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  /* Content Panel */
-  .content-panel {
-    width: 0;
-    background: #252526;
-    overflow: hidden;
-    transition: width 0.3s ease;
-    border-right: 1px solid #3e3e3e;
-  }
-  
-  .content-panel.expanded {
-    width: 240px;
-  }
-  
-  /* Sidebar collapsed state */
-  .sidebar-container.collapsed .content-panel {
-    width: 0 !important;
-  }
-  
-  .sidebar-container.collapsed .icon-item.active {
-    background: #2c2c2c;
-  }
-  
-  .sidebar-container.collapsed .icon-item.active::before {
-    display: none;
-  }
-  
-  .panel-header {
-    padding: 24px 16px;
-    height: 60px;
-    background: #2d2d30;
-    border-bottom: 1px solid #3e3e3e;
-    color: #cccccc;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .panel-content {
-    padding: 0;
-  }
-  
-  .section-header {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .section-header:hover {
-    background: #37373d;
-  }
-  
-  .section-header .chevron {
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-    transition: transform 0.2s ease;
-  }
-  
-  .section-header.collapsed .chevron {
-    transform: rotate(-90deg);
-  }
-  
-  .section-items {
-    padding-left: 32px;
-    max-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transition: max-height 0.3s ease;
-  }
-  
-  .section-items.collapsed {
-    max-height: 0;
-  }
-  
-  /* Scrollbar styling for schema panel */
-  .section-items::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .section-items::-webkit-scrollbar-track {
-    background: #2d2d30;
-  }
-  
-  .section-items::-webkit-scrollbar-thumb {
-    background: #666;
-    border-radius: 3px;
-  }
-  
-  .section-items::-webkit-scrollbar-thumb:hover {
-    background: #888;
-  }
-  
-  /* Schema resizer styles */
-  .schema-resizer {
-    height: 8px;
-    background: #2d2d30;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: ns-resize;
-    position: relative;
-    transition: background 0.2s ease;
-  }
-  
-  .schema-resizer:hover {
-    background: #3e3e3e;
-  }
-  
-  .schema-resizer .resizer-line {
-    width: 40px;
-    height: 2px;
-    background: #666;
-    border-radius: 1px;
-  }
-  
-  .schema-resizer:hover .resizer-line {
-    background: #888;
-  }
-  
-  /* Table item styles */
-  .table-item {
-    margin-bottom: 4px;
-  }
-  
-  .table-header {
-    display: flex;
-    align-items: center;
-    padding: 2px 8px;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    border-radius: 4px;
-    min-height: 24px;
-  }
-  
-  .table-header:hover {
-    background: #37373d;
-  }
-  
-  .table-chevron {
-    width: 12px;
-    display: inline-block;
-    margin-right: 8px;
-    font-family: monospace;
-    font-size: 12px;
-    font-weight: bold;
-    transition: transform 0.2s ease;
-    color: #888;
-  }
-  
-  .table-header.expanded .table-chevron {
-    transform: rotate(90deg);
-  }
-  
-  .table-name {
-    flex: 1;
-  }
-  
-  .table-columns {
-    max-height: 200px;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    margin-left: 20px;
-    border-left: 1px solid #333;
-    padding-left: 8px;
-  }
-  
-  .table-columns.collapsed {
-    max-height: 0;
-  }
-  
-  .column-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2px 8px;
-    font-size: 12px;
-    color: #aaa;
-  }
-  
-  .column-name {
-    color: #cccccc;
-    font-weight: 500;
-  }
-  
-  .column-type {
-    color: #888;
-    font-size: 11px;
-    font-family: monospace;
-  }
-  
-  .table-menu {
-    margin-left: auto;
-    padding: 2px 6px;
-    color: #888;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    user-select: none;
-    z-index: 10;
-  }
-  
-  .table-menu:hover {
-    background: #37373d;
-    color: #cccccc;
-  }
-  
-  /* Table context menu */
-  .table-context-menu {
-    position: fixed;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    padding: 4px;
-    min-width: 120px;
-    z-index: 1000;
-    display: none;
-  }
-  
-  .table-context-menu .menu-item {
-    display: block;
-    width: 100%;
-    padding: 8px 12px;
-    background: none;
-    border: none;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s ease;
-    text-align: left;
-  }
-  
-  .table-context-menu .menu-item:hover {
-    background: #37373d;
-  }
-  
-  .section-item {
-    padding: 4px 16px;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    display: flex;
-    align-items: center;
-  }
-  
-  .section-item:hover {
-    background: #37373d;
-  }
-  
-  .section-item::before {
-    content: '';
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23cccccc' viewBox='0 0 16 16'%3E%3Cpath d='M4 4h8v1H4V4zm0 3h8v1H4V7zm0 3h8v1H4v-1z'/%3E%3C/svg%3E") no-repeat center;
-    background-size: contain;
-  }
-  
-  .add-button {
-    margin-left: auto;
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    background: #007acc;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    opacity: 1;
-    transition: opacity 0.2s ease;
-  }
-  
-  /* Saved Query Item Styles */
-  .saved-query-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px 16px;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .saved-query-item:hover {
-    background: #37373d;
-  }
-  
-  .saved-query-item .query-name {
-    flex: 1;
-    margin-right: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .query-menu-button {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s ease, background 0.2s ease;
-    font-size: 16px;
-    line-height: 1;
-  }
-  
-  .saved-query-item:hover .query-menu-button {
-    opacity: 1;
-  }
-  
-  .query-menu-button:hover {
-    background: #4a4a4a;
-    color: #ffffff;
-  }
-  
-  /* Query Context Menu */
-  .query-context-menu {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    padding: 4px;
-    min-width: 120px;
-    z-index: 1000;
-  }
-  
-  .query-context-menu .menu-item {
-    display: block;
-    width: 100%;
-    padding: 8px 12px;
-    background: none;
-    border: none;
-    color: #cccccc;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s ease;
-    text-align: left;
-  }
-  
-  .query-context-menu .menu-item:hover {
-    background: #37373d;
-  }
-  
-  .query-context-menu .menu-item.delete {
-    color: #f87171;
-  }
-  
-  .query-context-menu .menu-item.delete:hover {
-    background: #dc2626;
-    color: #ffffff;
-  }
-  
-  /* Main content area */
-  .main-content {
-    margin-top: 60px;
-    margin-left: 60px;
-    height: calc(100vh - 60px);
-    padding: 0;
-  }
-  
-  /* Ensure GridStack container fits viewport with explicit height */
-  .grid-stack {
-    margin-top: 80px;
-    height: calc(100vh - 120px) !important;
-    height: 100% !important;
-    min-height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  
-  /* Adjust main content when sidebar is expanded */
-  .sidebar-container:not(.collapsed)~.main-content {
-    padding-left: 240px;
-    /* Adjust left padding for expanded sidebar */
-  }
-  
-  #sql-query-section,
-  #data-table-section,
-  #data-analysis-section {
-    /* Make inner sections fill the available width of the main-content padding - if not it will grow infinitely */
-    box-sizing: border-box;
-    /* Include padding in the element's total width */
-  }
-  
-  /* grid-stack elements */
-  
-  /* Ensure the .grid-stack-item-content fills the .grid-stack-item */
-  .grid-stack-item-content {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    background-color: #2d2d30;
-    font-size: 13px;
-  
-    /* Crucial Flexbox properties for vertical layout */
-    display: flex;
-    flex-direction: column;
-    /* height: 100%;  Make it fill the GridStack item's height */
-    box-sizing: border-box; /* Include padding in height calculation */
-    padding: 15px; /* Consistent internal padding for all widgets */
-    overflow: hidden;
-  }
-  
-  .text-input {
-    background-color: #2d2d30;
-    color: #cccccc;
-    /* Remove gs-w and gs-h here, as they are on the parent grid-stack-item */
-  }
-  
-  .text-input h3 {
-    /* Add padding to the header */
-    padding-bottom: 10px; /* Adjust as needed, corresponds to your p-4 class */
-    box-sizing: border-box; /* Include padding in height calculation */
-  }
-  
-  .textarea-wrapper {
-    display: flex;
-    border: 1px solid #444;
-    border-radius: 2px;
-    background-color: #1a1a1a;
-    flex-grow: 1;
-    max-height: calc(100% - 60px);
-    min-height: 80px;
-    overflow: hidden;
-  }
-  
-  .line-numbers {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    font-family: monospace;
-    font-size: 13px;
-    line-height: 1.2;
-    padding: 10px 8px 10px 10px;
-    border-right: 1px solid #444;
-    text-align: right;
-    user-select: none;
-    min-width: 40px;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    white-space: pre;
-    height: 100%;
-  }
-  
-  .line-numbers::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .text-input #sql-textarea {
-    background-color: #1a1a1a;
-    border: none;
-    border-radius: 0;
-    width: 100%;
-    flex-grow: 1;
-    resize: none;
-    font-family: monospace;
-    font-size: 13px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    outline: none;
-    line-height: 1.2;
-    padding: 10px;
-    color: #ffffff;
-  }
-  
-  
-  .textarea-wrapper:focus-within {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2);
-  }
-  
-  .text-input #sql-textarea:focus {
-    outline: none;
-  }
-  
-  .text-input #error-details {
-    /* Adjust padding and margin for error details */
-    padding: 10px; /* Equal padding as textarea's horizontal margin */
-    margin-top: 10px; /* Space between textarea and error details */
-    box-sizing: border-box;
-  }
-  
-  /* Add a style for the grid-stack-item itself to handle padding */
-  .grid-stack-item {
-      padding: 0; /* Remove default grid-stack-item padding if any, the content handles it */
-  }
-  
-  
-  .data-table {
-    color: #cccccc;
-    /* flex: 1; -- This was on .data-table, but it's more specific now for .table-wrapper */
-  }
-  
-  /* Apply padding to the header inside .grid-stack-item-content */
-  .data-table h3 {
-    padding-bottom: 10px; /* Adjust as needed, corresponds to your p-4 class */
-    flex-shrink: 0; /* Prevent header from shrinking */
-    box-sizing: border-box;
-  }
-  
-  /* Table Wrapper for scrolling */
-  .table-wrapper {
-    flex-grow: 1; /* Make the table wrapper fill remaining space */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    position: relative; /* Needed for sticky positioning */
-    padding: 0 10px 10px; /* Padding for left, right, and bottom within the wrapper */
-    /* This 10px bottom margin will act as the 20px bottom anchor total, as 10px will be within the wrapper and 10px will be from the content */
-    scroll-behavior: smooth; /* Smooth scrolling */
-  }
-  
-  /* Table Placeholder */
-  #table-placeholder {
-    /* Make sure placeholder respects parent padding */
-  
-    margin-top: 0; /* Reset margin, as padding on wrapper handles space */
-    box-sizing: border-box;
-  }
-  
-  .data-table table {
-    color: #cccccc;
-    border-spacing: 0;
-    min-width: 100%; /* Allow table to expand beyond container width */
-    table-layout: auto; /* Allow columns to size based on content */
-    border-collapse: collapse;
-    margin-top: 0; /* Remove default table top margin */
-  }
-  
-  .data-table th {
-    text-align: left;
-    background-color: #0f0f0f;
-    padding: 0 10px; /* Add top/bottom padding */
-    border-spacing: 0;
-    position: sticky; /* Make header sticky */
-    top: 0; /* Stick to the top of its scrollable container */
-    z-index: 10; /* Ensure header stays on top of content when scrolling */
-    transition: background-color 0.2s ease;
-    white-space: nowrap; /* Prevent text wrapping */
-    min-width: 120px; /* Minimum column width */
-    box-sizing: border-box;
-  }
-  
-  .data-table th:hover {
-    background-color: #1a1a1a;
-  }
-  
-  .data-table td {
-    text-align: left;
-    background-color: #0f0f0f;
-    padding: 0 10px; /* Match header padding */
-    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Add a top border */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add a bottom border */
-    border-spacing: 0;
-    white-space: nowrap; /* Prevent text wrapping */
-    min-width: 120px; /* Minimum column width */
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis for long content */
-  }
-  
-  /* Optional: Add hover state for table rows */
-  .data-table tbody tr:hover {
-      background-color: #2a2a2a; /* Slightly lighter on hover */
-  }
-  
-  .chart-div {
-    background-color: #2d2d30;
-    color: #cccccc;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Prevent scrolling on the chart div itself */
-  }
-  
-  /* Chart div header styling to match data table */
-  .chart-div h3 {
-    padding-bottom: 10px; /* Match data table header padding */
-    flex-shrink: 0; /* Prevent header from shrinking */
-    box-sizing: border-box;
-    font-size: 13px; /* Match data table font size */
-  }
-  #chart-type-dropdown {
-    background-color: #2d2d30;
-    font-size: 13px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    font-size: 13px;
-    background-color: #2d2d30;
-  }
-  
-  /* Chart container wrapper - shorter to prevent scrolling */
-  #chart-container {
-    flex-grow: 1; /* Allow expansion to fill space */
-    height: 100%; /* Use full available height */
-    min-height: 200px; /* Minimum height for visibility */
-    position: relative; /* Needed for absolute positioning */
-    padding: 0 10px 10px; /* Match table wrapper padding */
-    overflow: hidden; /* Always prevent scrolling */
-  }
-  
-  /* Chart placeholder styling to match data table */
-  #chart-placeholder {
-    padding: 20px;
-    text-align: center;
-    border: 2px dashed #555;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 13px; /* Match data table font size */
-    color: #888;
-    background-color: #2d2d30; /* Match chart div background */
-    overflow: hidden; /* Prevent any overflow */
-  }
-  /* Remove hover effects that might hide them again */
-  .grid-stack-item:not(.ui-resizable-resizing) > .ui-resizable-handle {
-      opacity: 1 !important;
-  }
-  
-  /* Prevent Plotly from interfering with GridStack resize */
-  .grid-stack-item.ui-resizable-resizing .plotly-graph-div {
-    pointer-events: none;
-  }
-  
-  .grid-stack-item.ui-draggable-dragging .plotly-graph-div {
-    pointer-events: none;
-  }
-  
-  /* Also disable during any grid interaction */
-  .grid-stack.grid-stack-animate .plotly-graph-div {
-    pointer-events: none;
-  }
-  
-  /* NEW: Class to forcefully disable pointer events */
-  .plotly-no-pointer-events {
-    pointer-events: none !important;
-  }
-  
-  /* Position resize handles inside div border */
-  .grid-stack-item .ui-resizable-se {
-    bottom: 10px !important;
-    right: 10px !important;
-    width: 28px !important;
-    height: 28px !important;
-    background: none !important;
-    border: none !important;
-    cursor: nw-resize !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: absolute !important;
-  }
-  
-  /* Use larger diagonal double-headed arrow emoji */
-  .grid-stack-item .ui-resizable-se::before {
-    content: "⤢";
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
-    pointer-events: none;
-    line-height: 1;
-    transform: rotate(-45deg);
-  }
-  
-  /* Prevent resize issues at viewport boundaries */
-  .grid-stack {
-    overflow: visible !important;
-    min-height: 100vh;
-    position: relative !important;
-  }
-  
-  /* Ensure grid items don't jump during resize */
-  .grid-stack-item.ui-resizable-resizing {
-    position: relative !important;
-    z-index: 1000 !important;
-  }
-  
-  /* Conditional min-height for data visualization when chart is present */
-  #data-analysis-section.has-chart {
-    min-height: 400px !important; /* Enforce minimum height for chart visibility */
-  }
-  
-  /* Prevent scrolling in data visualization div */
-  #data-analysis-section .grid-stack-item-content {
-    overflow-y: hidden !important; /* Prevent vertical scrolling */
-  }
-  
-  /* Chart Designer Popup Styles */
-  .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-  }
-  
-  .popup-overlay.hidden {
-    display: none;
-  }
-  
-  .popup-content {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    width: 400px;
-    max-width: 90vw;
-  }
-  
-  .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid #333;
-  }
-  
-  .popup-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #ffffff;
-  }
-  
-  .popup-close {
-    background: none;
-    border: none;
-    color: #cccccc;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-  }
-  
-  .popup-close:hover {
-    background-color: #333;
-  }
-  
-  .popup-body {
-    padding: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 16px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 6px;
-    color: #cccccc;
-    font-weight: 500;
-    font-size: 14px;
-  }
-  
-  .form-input, .form-select {
-    width: 100%;
-    padding: 8px 12px;
-    background-color: #1a1a1a !important;
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: #ffffff !important;
-    font-size: 14px;
-    transition: border-color 0.2s;
-    font-family: inherit;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    box-sizing: border-box;
-  }
-  
-  .form-input:focus, .form-select:focus {
-    outline: none;
-    border-color: #0066cc;
-    background-color: #1a1a1a !important;
-  }
-  
-  .form-input::placeholder {
-    color: #888;
-  }
-  
-  .form-select option {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-    padding: 8px;
-  }
-  
-  .form-input:hover, .form-select:hover {
-    background-color: #1a1a1a !important;
-    border-color: #0066cc;
-  }
-  
-  .popup-footer {
-    padding: 16px 20px;
-    border-top: 1px solid #333;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .popup-button {
-    background-color: #0066cc;
-    color: #ffffff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s;
-  }
-  
-  .popup-button:hover {
-    background-color: #0052a3;
-  }
-  
-  /* Connection Popup Specific Styles */
-  .connection-popup {
-    width: 500px;
-    max-width: 90vw;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    color: #cccccc;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-  }
-  
-  .close-button:hover {
-    background-color: #333;
-  }
-  
-  .form-row {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .form-row .form-group {
-    flex: 1;
-  }
-  
-  .popup-button.secondary {
-    background-color: #333;
-    color: #ffffff;
-    margin-right: 8px;
-  }
-  
-  .popup-button.secondary:hover {
-    background-color: #444;
-  }
-  
-  .popup-button.primary {
-    background-color: #0066cc;
-    color: #ffffff;
-  }
-  
-  .popup-button.primary:hover {
-    background-color: #0052a3;
-  }
-  
-  .color-picker {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .color-picker input[type="color"] {
-    width: 40px;
-    height: 30px;
-    border: 1px solid #444;
-    border-radius: 4px;
-    background-color: transparent;
-    cursor: pointer;
-  }
-  
-  .connection-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    gap: 8px;
-  }
-  
-  .connection-item:hover {
-    background-color: #333;
-  }
-  
-  .connection-item.active {
-    background-color: #0066cc;
-    color: #ffffff;
-  }
-  
-  .connection-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  
-  .connection-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  
-  .connection-name {
-    font-weight: 500;
-    font-size: 14px;
-  }
-  
-  .connection-details {
-    font-size: 12px;
-    color: #888;
-  }
-  
-  .connection-actions {
-    display: flex;
-    gap: 4px;
-  }
-  
-  .connection-action {
-    background: none;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
-  
-  .connection-action:hover {
-    background-color: #444;
-    color: #ffffff;
-  }
-  
-  .connection-action.active {
-    color: #9333ea;
-  }
-  
-  /* Connection Test Results */
-  .connection-result {
-    margin-top: 16px;
-    padding: 12px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-  }
-  
-  .connection-result.success {
-    background-color: #065f46;
-    border: 1px solid #10b981;
-    color: #ffffff;
-  }
-  
-  .connection-result.error {
-    background-color: #7f1d1d;
-    border: 1px solid #ef4444;
-    color: #ffffff;
-  }
-  
-  .connection-result.warning {
-    background-color: #78350f;
-    border: 1px solid #f59e0b;
-    color: #ffffff;
-  }
-  
-  .result-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .result-icon {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .result-message {
-    flex: 1;
-    font-size: 14px;
-  }
-  
-  /* Form Validation */
-  .form-input.error, .form-select.error {
-    border-color: #ef4444 !important;
-    background-color: #7f1d1d !important;
-  }
-  
-  .form-group.error label {
-    color: #ef4444 !important;
-  }
-  
-  .validation-message {
-    color: #ef4444;
-    font-size: 12px;
-    margin-top: 4px;
-    display: block;
-  }
-  
-  
-  
-  
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #0f0f0f;
+  color: #ffffff;
+  padding: 0px;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.app-header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-bottom: 1px solid #333;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* --- NEW: Layout Selector Popup Styles (Append to end of file) --- */
+#layout-selector-popup {
+  position: absolute; /* Allows JS to position it precisely */
+  z-index: 1001;      /* Force it above the header (which is z-index: 100) */
+  background-color: #1a1a1a; /* Match your dark theme */
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  display: flex;       /* Layout buttons in a column */
+  flex-direction: column;
+  gap: 8px;            /* Space between buttons */
+
+  /* top and left will be set by JS */
+}
+
+/* Styles for individual layout option buttons inside the popup */
+.layout-option-btn {
+  background-color: #2d2d30; /* Darker button background */
+  color: #cccccc;            /* Light color for icons */
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;             /* To center the SVG icon */
+  justify-content: left;
+  align-items: left;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.layout-option-btn:hover {
+  background-color: #3e3e3e; /* Lighter background on hover */
+  border-color: #6366f1; /* Highlight with blue on hover */
+}
+
+.layout-option-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor; /* SVG inherits color from parent button */
+}
+
+.layout-option-btn.active {
+  background-color: #6366f1 !important;
+  border-color: #6366f1 !important;
+  color: #ffffff !important;
+}
+
+/* Class to hide elements (used by JS) */
+.hidden {
+  display: none !important; /* IMPORTANT: Ensures it's completely hidden */
+}
+
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.2);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.header-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.app-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 24px;
+}
+
+.header-query {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-button:hover {
+  background-color: #3e3e3e; /* Lighter background on hover */
+  border-color: #6366f1; /* Highlight with blue on hover */
+}
+
+.header-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sidebar-container {
+  position: fixed;
+  top: 64px;
+  /* Header height */
+  bottom: 0;
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Icon Bar */
+.icon-bar {
+  width: 60px;
+  background: #1a1a1a;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  gap: 8px;
+}
+
+.icon-item {
+  width: 44px;
+  height: 44px;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #888;
+}
+
+.icon-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.icon-item.active {
+  background: rgba(99, 102, 241, 0.2);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.icon-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Content Panel */
+.content-panel {
+  width: 0;
+  background: #252526;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  border-right: 1px solid #3e3e3e;
+}
+
+.content-panel.expanded {
+  width: 240px;
+}
+
+/* Sidebar collapsed state */
+.sidebar-container.collapsed .content-panel {
+  width: 0 !important;
+}
+
+.sidebar-container.collapsed .icon-item.active {
+  background: #2c2c2c;
+}
+
+.sidebar-container.collapsed .icon-item.active::before {
+  display: none;
+}
+
+.panel-header {
+  padding: 24px 16px;
+  height: 60px;
+  background: #2d2d30;
+  border-bottom: 1px solid #3e3e3e;
+  color: #cccccc;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.panel-content {
+  padding: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.section-header:hover {
+  background: #37373d;
+}
+
+.section-header .chevron {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  transition: transform 0.2s ease;
+}
+
+.section-header.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.section-items {
+  padding-left: 32px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.section-items.collapsed {
+  max-height: 0;
+}
+
+/* Scrollbar styling for schema panel */
+.section-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.section-items::-webkit-scrollbar-track {
+  background: #2d2d30;
+}
+
+.section-items::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 3px;
+}
+
+.section-items::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* Schema resizer styles */
+.schema-resizer {
+  height: 8px;
+  background: #2d2d30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ns-resize;
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.schema-resizer:hover {
+  background: #3e3e3e;
+}
+
+.schema-resizer .resizer-line {
+  width: 40px;
+  height: 2px;
+  background: #666;
+  border-radius: 1px;
+}
+
+.schema-resizer:hover .resizer-line {
+  background: #888;
+}
+
+/* Table item styles */
+.table-item {
+  margin-bottom: 4px;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-radius: 4px;
+  min-height: 24px;
+}
+
+.table-header:hover {
+  background: #37373d;
+}
+
+.table-chevron {
+  width: 12px;
+  display: inline-block;
+  margin-right: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+  color: #888;
+}
+
+.table-header.expanded .table-chevron {
+  transform: rotate(90deg);
+}
+
+.table-name {
+  flex: 1;
+}
+
+.table-columns {
+  max-height: 200px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 20px;
+  border-left: 1px solid #333;
+  padding-left: 8px;
+}
+
+.table-columns.collapsed {
+  max-height: 0;
+}
+
+.column-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.column-name {
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.column-type {
+  color: #888;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.table-menu {
+  margin-left: auto;
+  padding: 2px 6px;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.table-menu:hover {
+  background: #37373d;
+  color: #cccccc;
+}
+
+/* Table context menu */
+.table-context-menu {
+  position: fixed;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  min-width: 120px;
+  z-index: 1000;
+  display: none;
+}
+
+.table-context-menu .menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  text-align: left;
+}
+
+.table-context-menu .menu-item:hover {
+  background: #37373d;
+}
+
+.section-item {
+  padding: 4px 16px;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.section-item:hover {
+  background: #37373d;
+}
+
+.section-item::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23cccccc' viewBox='0 0 16 16'%3E%3Cpath d='M4 4h8v1H4V4zm0 3h8v1H4V7zm0 3h8v1H4v-1z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+}
+
+.add-button {
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: #007acc;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+/* Saved Query Item Styles */
+.saved-query-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.saved-query-item:hover {
+  background: #37373d;
+}
+
+.saved-query-item .query-name {
+  flex: 1;
+  margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.query-menu-button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.saved-query-item:hover .query-menu-button {
+  opacity: 1;
+}
+
+.query-menu-button:hover {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+/* Query Context Menu */
+.query-context-menu {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  min-width: 120px;
+  z-index: 1000;
+}
+
+.query-context-menu .menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  text-align: left;
+}
+
+.query-context-menu .menu-item:hover {
+  background: #37373d;
+}
+
+.query-context-menu .menu-item.delete {
+  color: #f87171;
+}
+
+.query-context-menu .menu-item.delete:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* Main content area */
+.main-content {
+  margin-top: 60px;
+  margin-left: 60px;
+  height: calc(100vh - 60px);
+  padding: 0;
+}
+
+/* Ensure GridStack container fits viewport with explicit height */
+.grid-stack {
+  margin-top: 80px;
+  height: calc(100vh - 120px) !important;
+  height: 100% !important;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Adjust main content when sidebar is expanded */
+.sidebar-container:not(.collapsed)~.main-content {
+  padding-left: 240px;
+  /* Adjust left padding for expanded sidebar */
+}
+
+#sql-query-section,
+#data-table-section,
+#data-analysis-section {
+  /* Make inner sections fill the available width of the main-content padding - if not it will grow infinitely */
+  box-sizing: border-box;
+  /* Include padding in the element's total width */
+}
+
+/* grid-stack elements */
+
+/* Ensure the .grid-stack-item-content fills the .grid-stack-item */
+.grid-stack-item-content {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  background-color: #2d2d30;
+  font-size: 13px;
+
+  /* Crucial Flexbox properties for vertical layout */
+  display: flex;
+  flex-direction: column;
+  /* height: 100%;  Make it fill the GridStack item's height */
+  box-sizing: border-box; /* Include padding in height calculation */
+  padding: 15px; /* Consistent internal padding for all widgets */
+  overflow: hidden;
+}
+
+.text-input {
+  background-color: #2d2d30;
+  color: #cccccc;
+  /* Remove gs-w and gs-h here, as they are on the parent grid-stack-item */
+}
+
+.text-input h3 {
+  /* Add padding to the header */
+  padding-bottom: 10px; /* Adjust as needed, corresponds to your p-4 class */
+  box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.textarea-wrapper {
+  display: flex;
+  border: 1px solid #444;
+  border-radius: 2px;
+  background-color: #1a1a1a;
+  flex-grow: 1;
+  max-height: calc(100% - 60px);
+  min-height: 80px;
+  overflow: hidden;
+}
+
+.line-numbers {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.2;
+  padding: 10px 8px 10px 10px;
+  border-right: 1px solid #444;
+  text-align: right;
+  user-select: none;
+  min-width: 40px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: pre;
+  height: 100%;
+}
+
+.line-numbers::-webkit-scrollbar {
+  display: none;
+}
+
+.text-input #sql-textarea {
+  background-color: #1a1a1a;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  flex-grow: 1;
+  resize: none;
+  font-family: monospace;
+  font-size: 13px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  outline: none;
+  line-height: 1.2;
+  padding: 10px;
+  color: #ffffff;
+}
+
+
+.textarea-wrapper:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.text-input #sql-textarea:focus {
+  outline: none;
+}
+
+.text-input #error-details {
+  /* Adjust padding and margin for error details */
+  padding: 10px; /* Equal padding as textarea's horizontal margin */
+  margin-top: 10px; /* Space between textarea and error details */
+  box-sizing: border-box;
+}
+
+/* Add a style for the grid-stack-item itself to handle padding */
+.grid-stack-item {
+    padding: 0; /* Remove default grid-stack-item padding if any, the content handles it */
+}
+
+
+.data-table {
+  color: #cccccc;
+  /* flex: 1; -- This was on .data-table, but it's more specific now for .table-wrapper */
+}
+
+/* Apply padding to the header inside .grid-stack-item-content */
+.data-table h3 {
+  padding-bottom: 10px; /* Adjust as needed, corresponds to your p-4 class */
+  flex-shrink: 0; /* Prevent header from shrinking */
+  box-sizing: border-box;
+}
+
+/* Table Wrapper for scrolling */
+.table-wrapper {
+  flex-grow: 1; /* Make the table wrapper fill remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  position: relative; /* Needed for sticky positioning */
+  padding: 0 10px 10px; /* Padding for left, right, and bottom within the wrapper */
+  /* This 10px bottom margin will act as the 20px bottom anchor total, as 10px will be within the wrapper and 10px will be from the content */
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+/* Table Placeholder */
+#table-placeholder {
+  /* Make sure placeholder respects parent padding */
+
+  margin-top: 0; /* Reset margin, as padding on wrapper handles space */
+  box-sizing: border-box;
+}
+
+.data-table table {
+  color: #cccccc;
+  border-spacing: 0;
+  min-width: 100%; /* Allow table to expand beyond container width */
+  table-layout: auto; /* Allow columns to size based on content */
+  border-collapse: collapse;
+  margin-top: 0; /* Remove default table top margin */
+}
+
+.data-table th {
+  text-align: left;
+  background-color: #0f0f0f;
+  padding: 0 10px; /* Add top/bottom padding */
+  border-spacing: 0;
+  position: sticky; /* Make header sticky */
+  top: 0; /* Stick to the top of its scrollable container */
+  z-index: 10; /* Ensure header stays on top of content when scrolling */
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+  min-width: 120px; /* Minimum column width */
+  box-sizing: border-box;
+}
+
+.data-table th:hover {
+  background-color: #1a1a1a;
+}
+
+.data-table td {
+  text-align: left;
+  background-color: #0f0f0f;
+  padding: 0 10px; /* Match header padding */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Add a top border */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add a bottom border */
+  border-spacing: 0;
+  white-space: nowrap; /* Prevent text wrapping */
+  min-width: 120px; /* Minimum column width */
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for long content */
+}
+
+/* Optional: Add hover state for table rows */
+.data-table tbody tr:hover {
+    background-color: #2a2a2a; /* Slightly lighter on hover */
+}
+
+.chart-div {
+  background-color: #2d2d30;
+  color: #cccccc;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent scrolling on the chart div itself */
+}
+
+/* Chart div header styling to match data table */
+.chart-div h3 {
+  padding-bottom: 10px; /* Match data table header padding */
+  flex-shrink: 0; /* Prevent header from shrinking */
+  box-sizing: border-box;
+  font-size: 13px; /* Match data table font size */
+}
+#chart-type-dropdown {
+  background-color: #2d2d30;
+  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-size: 13px;
+  background-color: #2d2d30;
+}
+
+/* Chart container wrapper - shorter to prevent scrolling */
+#chart-container {
+  flex-grow: 1; /* Allow expansion to fill space */
+  height: 100%; /* Use full available height */
+  min-height: 200px; /* Minimum height for visibility */
+  position: relative; /* Needed for absolute positioning */
+  padding: 0 10px 10px; /* Match table wrapper padding */
+  overflow: hidden; /* Always prevent scrolling */
+}
+
+/* Chart placeholder styling to match data table */
+#chart-placeholder {
+  padding: 20px;
+  text-align: center;
+  border: 2px dashed #555;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 13px; /* Match data table font size */
+  color: #888;
+  background-color: #2d2d30; /* Match chart div background */
+  overflow: hidden; /* Prevent any overflow */
+}
+/* Remove hover effects that might hide them again */
+.grid-stack-item:not(.ui-resizable-resizing) > .ui-resizable-handle {
+    opacity: 1 !important;
+}
+
+/* Prevent Plotly from interfering with GridStack resize */
+.grid-stack-item.ui-resizable-resizing .plotly-graph-div {
+  pointer-events: none;
+}
+
+.grid-stack-item.ui-draggable-dragging .plotly-graph-div {
+  pointer-events: none;
+}
+
+/* Also disable during any grid interaction */
+.grid-stack.grid-stack-animate .plotly-graph-div {
+  pointer-events: none;
+}
+
+/* NEW: Class to forcefully disable pointer events */
+.plotly-no-pointer-events {
+  pointer-events: none !important;
+}
+
+/* Position resize handles inside div border */
+.grid-stack-item .ui-resizable-se {
+  bottom: 10px !important;
+  right: 10px !important;
+  width: 28px !important;
+  height: 28px !important;
+  background: none !important;
+  border: none !important;
+  cursor: nw-resize !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+}
+
+/* Use larger diagonal double-headed arrow emoji */
+.grid-stack-item .ui-resizable-se::before {
+  content: "⤢";
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+  pointer-events: none;
+  line-height: 1;
+  transform: rotate(-45deg);
+}
+
+/* Prevent resize issues at viewport boundaries */
+.grid-stack {
+  overflow: visible !important;
+  min-height: 100vh;
+  position: relative !important;
+}
+
+/* Ensure grid items don't jump during resize */
+.grid-stack-item.ui-resizable-resizing {
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* Conditional min-height for data visualization when chart is present */
+#data-analysis-section.has-chart {
+  min-height: 400px !important; /* Enforce minimum height for chart visibility */
+}
+
+/* Prevent scrolling in data visualization div */
+#data-analysis-section .grid-stack-item-content {
+  overflow-y: hidden !important; /* Prevent vertical scrolling */
+}
+
+/* Chart Designer Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.popup-overlay.hidden {
+  display: none;
+}
+
+.popup-content {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  width: 400px;
+  max-width: 90vw;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #333;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.popup-close:hover {
+  background-color: #333;
+}
+
+.popup-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #cccccc;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #1a1a1a !important;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ffffff !important;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: #0066cc;
+  background-color: #1a1a1a !important;
+}
+
+.form-input::placeholder {
+  color: #888;
+}
+
+.form-select option {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  padding: 8px;
+}
+
+.form-input:hover, .form-select:hover {
+  background-color: #1a1a1a !important;
+  border-color: #0066cc;
+}
+
+.popup-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-button {
+  background-color: #0066cc;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.popup-button:hover {
+  background-color: #0052a3;
+}
+
+/* Connection Popup Specific Styles */
+.connection-popup {
+  width: 500px;
+  max-width: 90vw;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background-color: #333;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.popup-button.secondary {
+  background-color: #333;
+  color: #ffffff;
+  margin-right: 8px;
+}
+
+.popup-button.secondary:hover {
+  background-color: #444;
+}
+
+.popup-button.primary {
+  background-color: #0066cc;
+  color: #ffffff;
+}
+
+.popup-button.primary:hover {
+  background-color: #0052a3;
+}
+
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-picker input[type="color"] {
+  width: 40px;
+  height: 30px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.connection-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  gap: 8px;
+}
+
+.connection-item:hover {
+  background-color: #333;
+}
+
+.connection-item.active {
+  background-color: #0066cc;
+  color: #ffffff;
+}
+
+.connection-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.connection-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.connection-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.connection-details {
+  font-size: 12px;
+  color: #888;
+}
+
+.connection-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.connection-action {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.connection-action:hover {
+  background-color: #444;
+  color: #ffffff;
+}
+
+.connection-action.active {
+  color: #9333ea;
+}
+
+/* Connection Test Results */
+.connection-result {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.connection-result.success {
+  background-color: #065f46;
+  border: 1px solid #10b981;
+  color: #ffffff;
+}
+
+.connection-result.error {
+  background-color: #7f1d1d;
+  border: 1px solid #ef4444;
+  color: #ffffff;
+}
+
+.connection-result.warning {
+  background-color: #78350f;
+  border: 1px solid #f59e0b;
+  color: #ffffff;
+}
+
+.result-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-icon {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.result-message {
+  flex: 1;
+  font-size: 14px;
+}
+
+/* Form Validation */
+.form-input.error, .form-select.error {
+  border-color: #ef4444 !important;
+  background-color: #7f1d1d !important;
+}
+
+.form-group.error label {
+  color: #ef4444 !important;
+}
+
+.validation-message {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+
+
+
